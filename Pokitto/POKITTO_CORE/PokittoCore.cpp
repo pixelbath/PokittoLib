@@ -45,6 +45,7 @@
 #include "PokittoTimer.h"
 #include "PokittoLogos.h"
 #include <stdlib.h>
+#include <math.h>
 
 #ifndef DISABLEAVRMIN
 #define max(a,b) ((a)>(b)?(a):(b))
@@ -818,10 +819,16 @@ void Core::showLogo() {
                 break;
             case 1:
                 /** POKITTO FADE IN **/
-                display.directcolor = display.interpolateColor(sc, COLOR_GREEN, i);
+                red = static_cast<uint16_t>(255 * (0.5f + 0.5f * sin(i / 3.0f)));
+                blue = static_cast<uint16_t>(255 * (0.5f + 0.5f * sin(i / 3.0f)+2));
+                green = static_cast<uint16_t>(255 * (0.5f + 0.5f * sin(i / 3.0f)+4));
+                // display.directcolor = display.interpolateColor(sc, COLOR_GREEN, i);
+                display.directcolor = display.RGBto565(red, blue, green);
                 display.directBitmap(POK_LCD_W/2 - (*Pokitto_logo/2),POK_LCD_H/2-(*(Pokitto_logo+1)/2),Pokitto_logo,1,1);
-                i += 28;
-                if (i>=0xFF) { state++; i=0;}
+                // i += 28;
+                // if (i>=0xFF) { state++; i=0;}
+                i++;
+                // if (i>=0x90) { state++; i=0; }
                 break;
             case 2:
                 /** POKITTO WAIT **/
